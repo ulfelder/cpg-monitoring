@@ -42,3 +42,9 @@ fetch <- function(year, month, day) {
     outname <- paste(y, m, d, ".atrocities.csv", sep="")
     write.csv(z1, outname, row.names=FALSE)
 }
+
+# Fetch the previous day's data
+yesterday <- as.Date(Sys.Date()) - 1
+fetch( substr(yesterday,1,4),
+       substr(yesterday,6,7),
+       substr(yesterday,9,10) )
