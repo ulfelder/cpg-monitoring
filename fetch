@@ -35,8 +35,12 @@ fetch <- function(year, month, day) {
                        (Actor1Type2Code=="GOV" | Actor1Type2Code=="MIL" |
                           Actor1Type2Code=="COP" | Actor1Type2Code=="SPY" |
                           Actor1Type2Code=="REB" | Actor1Type2Code=="SEP" )) ) 
-    z1 <- subset(z, select=c(GLOBALEVENTID, Actor1Name, Actor2Name, EventCode,
-                             ActionGeo_FullName, SOURCEURL))
+    z1 <- subset(z, select=c(GLOBALEVENTID,
+                             Actor1Name,
+                             Actor2Name,
+                             EventCode,
+                             ActionGeo_FullName,
+                             SOURCEURL))
     z1$year <- y
     z1$month <- m
     z1$day <- d
