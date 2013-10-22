@@ -37,11 +37,22 @@ fetch <- function(year, month, day) {
                           Actor1Type2Code=="REB" | Actor1Type2Code=="SEP" )) ) 
     z1 <- subset(z, select=c(GLOBALEVENTID, Actor1Name, Actor2Name, EventCode,
                              ActionGeo_FullName, SOURCEURL))
+    z1$year <- y
+    z1$month <- m
+    z1$day <- d
     z1$ushmm.screened <- 1  # Marker for events we reviewed
     z1$ushmm.eoi <- 0  # Marker for events that look like atrocities, set to 0 as default
+    z1$year.alt <- NA
+    z1$month.alt <- NA
+    z1$day.alt <- NA
+    z1$Actor1Name.alt <- NA
+    z1$Actor2Name.alt <- NA
     outname <- paste(y, m, d, ".atrocities.csv", sep="")
     write.csv(z1, outname, row.names=FALSE)
 }
+
+# Set working directory to desired target
+# setwd("c:/users/jay/dropbox/ushmm/monitoring/")
 
 # Fetch the previous day's data
 yesterday <- as.Date(Sys.Date()) - 1
