@@ -38,7 +38,11 @@ fetch <- function(year, month, day) {
                           Actor1Type2Code=="REB" | Actor1Type2Code=="SEP" )) ) 
     z1 <- subset(z, select=c(GLOBALEVENTID,
                              Actor1Name,
+                             Actor1Type1Code,
+                             Actor1Type2Code,
                              Actor2Name,
+                             Actor2Type1Code,
+                             Actor2Type2Code,
                              EventCode,
                              ActionGeo_FullName,
                              SOURCEURL))
@@ -50,8 +54,12 @@ fetch <- function(year, month, day) {
     z1$year.alt <- NA
     z1$month.alt <- NA
     z1$day.alt <- NA
-    z1$Actor1Name.alt <- NA
-    z1$Actor2Name.alt <- NA
+    z1$Actor1CountryCode.alt <- NA
+    z1$Actor1Type1Code.alt <- NA
+    z1$Actor1Type2Code.alt <- NA
+    z1$Actor2CountryCode.alt <- NA
+    z1$Actor2Type1Code.alt <- NA
+    z1$Actor2Type2Code.alt <- NA
     z1$location.alt <- NA
     z1$deaths <- NA
     z1$Comments <- NA
