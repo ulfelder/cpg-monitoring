@@ -38,9 +38,11 @@ fetch <- function(year, month, day) {
                           Actor1Type2Code=="REB" | Actor1Type2Code=="SEP" )) ) 
     z1 <- subset(z, select=c(GLOBALEVENTID,
                              Actor1Name,
+                             Actor1CountryCode,
                              Actor1Type1Code,
                              Actor1Type2Code,
                              Actor2Name,
+                             Actor2CountryCode,
                              Actor2Type1Code,
                              Actor2Type2Code,
                              EventCode,
