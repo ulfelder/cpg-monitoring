@@ -64,10 +64,14 @@ fetch <- function(year, month, day) {
     z1$Actor2Type2Code.alt <- NA
     z1$location.alt <- NA
     z1$deaths <- NA
+    z1$ushmm.eoi.duplicate <- NA
     z1$Comments <- NA
     outname <- paste(y, m, d, ".atrocities.csv", sep="")
     write.csv(z1, outname, row.names=FALSE)
 }
+
+# Make relevant Dropbox folder the working directory
+setwd("c:/users/jay/dropbox/ushmm/monitoring/")
 
 # Fetch the previous day's data
 yesterday <- as.Date(Sys.Date()) - 1
