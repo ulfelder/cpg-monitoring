@@ -17,9 +17,10 @@ fetch <- function(year, month, day) {
     unlink(temp2)
     unlink(temp3)
     z <- subset(dailies, 
-                      ( EventCode==180 | EventCode==1823 |
-                        EventCode==190 | EventCode==193 | EventCode==194 | EventCode==195 |
-                        EventCode==200 | EventCode==201 | EventCode==202 | EventCode==203 |
+                        IsRootEvent==1 &
+                       (EventCode==180 | EventCode==1823 |
+                          EventCode==190 | EventCode==193 | EventCode==194 | EventCode==195 |
+                          EventCode==200 | EventCode==201 | EventCode==202 | EventCode==203 |
                           EventCode==204 | EventCode==205 ) &
                       ((Actor2Type1Code=="CVL" | Actor2Type1Code=="OPP" |
                           Actor2Type1Code=="EDU" | Actor2Type1Code=="LAB" | 
@@ -51,12 +52,12 @@ fetch <- function(year, month, day) {
     z1$day.alt <- NA
     z1$Actor1Name.alt <- NA
     z1$Actor2Name.alt <- NA
+    z1$location.alt <- NA
+    z1$deaths <- NA
+    z1$Comments <- NA
     outname <- paste(y, m, d, ".atrocities.csv", sep="")
     write.csv(z1, outname, row.names=FALSE)
 }
-
-# Set working directory to desired target
-# setwd("c:/users/jay/dropbox/ushmm/monitoring/")
 
 # Fetch the previous day's data
 yesterday <- as.Date(Sys.Date()) - 1
