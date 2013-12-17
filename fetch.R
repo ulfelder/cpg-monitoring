@@ -1,7 +1,9 @@
+# Function to download & unzip daily file, filter for events of interest, and write out .csv with markers
+# for screened events and screening decisions
 fetch <- function(year, month, day) {
     y <- as.character(year)
-    m <- as.character(month)
-    d <- as.character(day)
+    m <- ifelse(month < 10, paste("0", as.character(month), sep=""), as.character(month))
+    d <- ifelse(day < 10, paste("0", as.character(day), sep=""), as.character(day))
     daily.url <- paste("http://gdelt.utdallas.edu/data/dailyupdates/", y, m, d, ".export.CSV.zip", sep = "")
     daily.csv <- paste(y, m, d, ".export.CSV", sep = "")
     temp <- tempfile()
@@ -51,8 +53,8 @@ fetch <- function(year, month, day) {
     z1$year <- y
     z1$month <- m
     z1$day <- d
-    z1$ushmm.screened <- 1  # Marker for events we reviewed
-    z1$ushmm.eoi <- 0  # Marker for events that look like atrocities, set to 0 as default
+    z1$ushmm.screened <- 1
+    z1$ushmm.eoi <- 0
     z1$year.alt <- NA
     z1$month.alt <- NA
     z1$day.alt <- NA
@@ -66,12 +68,10 @@ fetch <- function(year, month, day) {
     z1$deaths <- NA
     z1$ushmm.eoi.duplicate <- NA
     z1$Comments <- NA
+
     outname <- paste(y, m, d, ".atrocities.csv", sep="")
     write.csv(z1, outname, row.names=FALSE)
 }
-
-# Make relevant Dropbox folder the working directory
-setwd("c:/users/jay/dropbox/ushmm/monitoring/")
 
 # Fetch the previous day's data
 yesterday <- as.Date(Sys.Date()) - 1
