@@ -2,8 +2,8 @@
 # for screened events and screening decisions
 fetch <- function(year, month, day) {
     y <- as.character(year)
-    m <- ifelse(month < 10, paste("0", as.character(month), sep=""), as.character(month))
-    d <- ifelse(day < 10, paste("0", as.character(day), sep=""), as.character(day))
+    m <- as.character(month)
+    d <- as.character(day)
     daily.url <- paste("http://gdelt.utdallas.edu/data/dailyupdates/", y, m, d, ".export.CSV.zip", sep = "")
     daily.csv <- paste(y, m, d, ".export.CSV", sep = "")
     temp <- tempfile()
@@ -19,10 +19,12 @@ fetch <- function(year, month, day) {
     unlink(temp2)
     unlink(temp3)
     z <- subset(dailies, 
-                        IsRootEvent==1 &
-                       (EventCode==180 | EventCode==1823 |
-                          EventCode==190 | EventCode==193 | EventCode==194 | EventCode==195 |
-                          EventCode==200 | EventCode==201 | EventCode==202 | EventCode==203 |
+                        IsRootEvent==1 &  # Test on small sample suggested this produces ~ 20% missed pos rate
+                       (EventCode==180 | EventCode==1823 | 
+                          EventCode==183 | (EventCode>=1831 & EventCode<=1834) |
+                          EventCode==186 |
+                        EventCode==190 | EventCode==193 | EventCode==194 | EventCode==195 |
+                        EventCode==200 | EventCode==201 | EventCode==202 | EventCode==203 |
                           EventCode==204 | EventCode==205 ) &
                       ((Actor2Type1Code=="CVL" | Actor2Type1Code=="OPP" |
                           Actor2Type1Code=="EDU" | Actor2Type1Code=="LAB" | 
@@ -32,12 +34,12 @@ fetch <- function(year, month, day) {
                           Actor2Type2Code=="EDU" | Actor2Type2Code=="LAB" | 
                           Actor2Type2Code=="REL" | Actor2Type2Code=="HLH" |
                           Actor2Type2Code=="REF" | Actor2Type2Code=="MED" )) &
-                      ((Actor1Type1Code=="GOV" | Actor1Type1Code=="MIL" |
+                      ((Actor1Type1Code=="GOV" | Actor1Type1Code=="MIL" | 
                           Actor1Type1Code=="COP" | Actor1Type1Code=="SPY" |
-                          Actor1Type1Code=="REB" | Actor1Type1Code=="SEP" ) |
+                          Actor1Type1Code=="REB" | Actor1Type1Code=="SEP" | Actor1Type1Code=="UAF" ) |
                        (Actor1Type2Code=="GOV" | Actor1Type2Code=="MIL" |
                           Actor1Type2Code=="COP" | Actor1Type2Code=="SPY" |
-                          Actor1Type2Code=="REB" | Actor1Type2Code=="SEP" )) ) 
+                          Actor1Type2Code=="REB" | Actor1Type2Code=="SEP" | Actor1Type1Code=="UAF" )) ) 
     z1 <- subset(z, select=c(GLOBALEVENTID,
                              Actor1Name,
                              Actor1CountryCode,
@@ -55,7 +57,7 @@ fetch <- function(year, month, day) {
     z1$day <- d
     z1$ushmm.screened <- 1
     z1$ushmm.eoi <- 0
-    z1$year.alt <- NA
+    z1$year.alt <- NA   # Remaining vars are fields for manual corrections
     z1$month.alt <- NA
     z1$day.alt <- NA
     z1$Actor1CountryCode.alt <- NA
@@ -68,7 +70,6 @@ fetch <- function(year, month, day) {
     z1$deaths <- NA
     z1$ushmm.eoi.duplicate <- NA
     z1$Comments <- NA
-
     outname <- paste(y, m, d, ".atrocities.csv", sep="")
     write.csv(z1, outname, row.names=FALSE)
 }
