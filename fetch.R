@@ -2,8 +2,8 @@
 # for screened events and screening decisions
 fetch <- function(year, month, day) {
     y <- as.character(year)
-    m <- as.character(month)
-    d <- as.character(day)
+    m <- ifelse(month < 10, paste("0", month, sep=""), as.character(month))
+    d <- ifelse(day < 10, paste("0", day, sep=""), as.character(day))
     daily.url <- paste("http://gdelt.utdallas.edu/data/dailyupdates/", y, m, d, ".export.CSV.zip", sep = "")
     daily.csv <- paste(y, m, d, ".export.CSV", sep = "")
     temp <- tempfile()
